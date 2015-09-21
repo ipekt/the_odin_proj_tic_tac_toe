@@ -1,0 +1,14 @@
+{
+  "name": "the_odin_proj_tic_tac_toe",
+  "version": "1.0.0",
+  "description": "Tic Tac Toe Game Riot.js Demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ipek Turgul",
+  "license": "ISC",
+  "devDependencies": {
+    "riot": "^2.2.4"
+  }
+}
