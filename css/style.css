@@ -1,0 +1,82 @@
+body {
+  font-family: arial, sans-serif;
+  margin: 0 auto;
+  width: 600px;
+}
+
+h1 {
+  font-size: 3em;
+  margin: 1em;
+}
+h2 {
+  text-align: center;
+}
+h3 {
+  display: inline-block;
+  text-align: left;
+}
+.nought, 
+.cross {
+  background: pink;
+  font-family: fantasy;
+  font-size: 3em;
+  font-weight: 500;
+  display: inline-block;
+  margin: 0 auto;
+  text-align: center;
+  width: 49%;
+  cursor: pointer;
+  position: relative;
+  line-height: 2em;
+}
+
+.board li {
+  background-color: #999999;
+  border: 1px solid white;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  display: inline-block;
+  height: 100px;
+  width: 33.3%;
+  font-size: 5em;
+  font-family: fantasy;
+  text-align: center;
+  color: #999999;
+}
+
+.sides {
+  margin: 2em auto;
+  text-align: center;
+  width: 300px;
+}
+
+input[type="checkbox"] {
+  font-size: 10em;
+  margin: 0;
+}
+
+ul {
+  margin: 0 auto;
+  padding: 0;
+  width: 300px;
+}
+
+.x {
+  content: 'x';
+ 
+}
+
+.o {
+  content: 'o';
+}
+.addcolor {
+  color: #000 !important;
+}
+.firstPlayer:before {
+  content: 'First Player';
+  font-size: 0.3em;
+  position: absolute;
+  bottom: -30px;
+}
