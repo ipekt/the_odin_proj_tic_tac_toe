@@ -25,11 +25,8 @@ riot.tag('game', '<h1>{ opts.title }</h1> <h2>This game is for 2 player. Please 
     }.bind(this);
 
     var playTurn = function (user, e) {
-
-      e.item.value = user;
-      
-      var board = document.getElementsByClassName('board');
       e.target.className = 'addcolor';
+      opts.board[e.item.key] = user
       count += 1;
     }
 
@@ -38,6 +35,7 @@ riot.tag('game', '<h1>{ opts.title }</h1> <h2>This game is for 2 player. Please 
       if (count >= 9) {
         console.log('game over');
       }
+
       if (user.length == 2) {
         if (count % 2 == 0) {
           playTurn(user[1], e);
@@ -45,6 +43,7 @@ riot.tag('game', '<h1>{ opts.title }</h1> <h2>This game is for 2 player. Please 
         }
         playTurn(user[0], e);
       }
+
       this.on('update', function(){
         var tst = document.getElementById('tst');
 

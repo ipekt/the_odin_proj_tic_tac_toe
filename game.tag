@@ -39,11 +39,10 @@
     }
 
     var playTurn = function (user, e) {
-      //e.target.innerHTML = user;
-      e.item.value = user;
-      
-      var board = document.getElementsByClassName('board');
+
       e.target.className = 'addcolor';
+
+      opts.board[e.item.key] = user
       count += 1;
     }
 
@@ -59,6 +58,7 @@
         }
         playTurn(user[0], e);
       }
+
       this.on('update', function(){
         var tst = document.getElementById('tst');
         //tst.update();
