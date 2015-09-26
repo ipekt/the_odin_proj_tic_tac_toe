@@ -1,9 +1,18 @@
 riot.tag('game', '<h1>{ opts.title }</h1> <h2>This game is for 2 player. Please select first player:</h2> <div class="sides"> <div class="nought" onclick="{ setUser }">{ sides.noughts }</div> <div class="cross" onclick="{ setUser }">{ sides.crosses }</div> <button onclick="{ reset }">Reset</button> </div> <ul class="board" id="tst"> <li each="{ key, value in opts.board }" data="{ key }" onclick="{ parent.play }" >{ value }</li> </ul>', function(opts) {
-    this.sides = opts.sides;
+    this.sides = opts.sides
     var count = 1,
     self = this,
     userSet = false,
     user = [];
+
+
+
+
+
+
+
+
+
 
     this.setUser = function(e) {
       var firstUser;
@@ -20,21 +29,24 @@ riot.tag('game', '<h1>{ opts.title }</h1> <h2>This game is for 2 player. Please 
         }
       }
       
-      userSet = true; 
-      console.log(user);
+      userSet = true;
     }.bind(this);
 
     var playTurn = function (user, e) {
-      e.target.className = 'addcolor';
-      opts.board[e.item.key] = user
-      count += 1;
+      if (opts.board[e.item.key] == '.') {
+        e.target.className = 'addcolor';
+        opts.board[e.item.key] = user
+        count += 1;
+
+        for (var key in opts.board) {
+          console.log(opts.board[key])
+        }
+
+
+      }      
     }
 
-
     this.play = function(e) {
-      if (count >= 9) {
-        console.log('game over');
-      }
 
       if (user.length == 2) {
         if (count % 2 == 0) {
@@ -43,11 +55,6 @@ riot.tag('game', '<h1>{ opts.title }</h1> <h2>This game is for 2 player. Please 
         }
         playTurn(user[0], e);
       }
-
-      this.on('update', function(){
-        var tst = document.getElementById('tst');
-
-      });
     }.bind(this);
 
     this.reset = function(e) {
@@ -61,7 +68,6 @@ riot.tag('game', '<h1>{ opts.title }</h1> <h2>This game is for 2 player. Please 
       for (var i = 0; i < boardSections.length; i++) {
         boardSections[i].classList.remove('addcolor');
         boardSections[i].innerHTML = '.';
-
       }
     }.bind(this);
 
