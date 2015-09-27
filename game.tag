@@ -1,85 +1,160 @@
 <game>
   <h1>{ opts.title }</h1>
-  <h2>This game is for 2 player. Please select first player:</h2>
-  <div class="sides">
-    <div class="nought" onclick={ setUser }>{ sides.noughts }</div>
-    <div class="cross" onclick={ setUser }>{ sides.crosses }</div>
-    <button onclick={ reset }>Reset</button>
+  <h2>This game is for 2 player. Please select first player</h2>
+  <button class="btn" onclick={ reset }>Reset</button>
+  <div class="sides" onclick={ setUser }>
+    <div class="nought">{ sides.noughts }</div>
+    <div class="cross">{ sides.crosses }</div>
   </div>
-  <ul class="board" id="tst">
-    <li each="{ key, value in opts.board }" data="{ key }" onclick={ parent.play } >{ value }</li>
+  <ul class="board">
+    <div class="gameover hide">Game Over</div>
+    <li each="{ board }" onclick={ parent.play } >{ content }</li>
   </ul>
 
   <script>
     this.sides = opts.sides
-    var count = 1,
+    this.board = opts.board
+    var count = 0,
     self = this,
     userSet = false,
-    user = [];
-    // Winning possibilities
-    // r1: c1-2-3
-    // r2: c1-2-3
-    // r3: c1-2-3
-    // c1: r1-2-3
-    // c2: r1-2-3
-    // c3: r1-2-3
-    // r1c1-r2c2-r3c3
-    // r1c3-r2c2-r3c1
+    gameOver = false,
+    user = [],
+    message = document.getElementsByClassName('gameover');
 
+    
     setUser(e) {
       var firstUser;
 
-      e.target.classList.add('firstPlayer');
       if (!userSet) {
-        firstUser = e.target.innerHTML;
-        user.push(firstUser);
-
-        if (firstUser == 'X') {
-          user.push('O');
-        } else {
-          user.push('X');
-        }
+          e.target.classList.add('firstPlayer');
+          firstUser = e.target.innerHTML;
+          user.push(firstUser);
+          if (firstUser == 'X') {
+              user.push('O');
+          } else {
+              user.push('X');
+          }
       }
-      
       userSet = true;
     }
 
-    var playTurn = function (user, e) {
-      if (opts.board[e.item.key] == '.') {
-        e.target.className = 'addcolor';
-        opts.board[e.item.key] = user
-        count += 1;
-
-        for (var key in opts.board) {
-          console.log(opts.board[key])
+    var selectedArr = function(el, target) {
+        var myarr = (opts.board).filter(function(obj) {
+          return (obj[target] == el)
+        })
+        var x = myarr.filter(function(sel) {
+          return (sel.content == 'X')
+        })
+        var o =  myarr.filter(function(sel) {
+          return (sel.content == 'O')
+        })
+          
+        if (x.length == 3) {
+          return endGame('x')
+        } else if (o.length == 3) {
+          return endGame('o')
         }
 
+      }
 
-      }      
+    var findCrossWin = function() {
+      
+      var selected = (opts.board).filter(function(obj) {
+        return obj.selected
+      })
+      var r1c1 = selected.filter(function(obj) {
+        return obj.row == 1 && obj.column == 1
+      })
+      var r2c2 = selected.filter(function(obj) {
+        return obj.row == 2 && obj.column == 2
+      })
+      var r3c3 = selected.filter(function(obj) {
+        return obj.row == 3 && obj.column == 3
+      })
+
+      var r1c3 = selected.filter(function(obj) {
+        return obj.row == 1 && obj.column == 3
+      })
+
+      var r3c1 = selected.filter(function(obj) {
+        return obj.row == 3 && obj.column == 1
+      })
+
+      
+      if (r1c1.length > 0 && r2c2.length > 0 & r3c3.length > 0) {
+        if (r1c1[0].content == r2c2[0].content && r1c1[0].content == r3c3[0].content) {
+          return endGame(r1c1[0].content)
+        }
+      }
+
+      if (r3c1.length > 0 && r2c2.length > 0 & r1c3.length > 0) {
+        if (r3c1[0].content == r2c2[0].content && r3c1[0].content == r1c3[0].content) {
+          return endGame(r3c1[0].content)
+        }
+      }
+
+      if (selected.length == 9) {
+        return endGame('noone')
+      }
+    }
+
+    var endGame = function(win) {
+      gameOver = true;
+      message[0].innerHTML = 'Game over ' + win + ' wins!'
+      message[0].classList.remove('hide');
+    }
+
+
+    var playTurn = function (user, e) {
+      var item = e.item
+     
+      if (!item.selected && !gameOver) {
+        item.selected = true;
+        item.content = user
+        e.target.className = 'addcolor'
+        count += 1
+        console.log(count)
+        
+        selectedArr(1, 'row')
+        selectedArr(2, 'row')
+        selectedArr(3, 'row')
+        selectedArr(1, 'column')
+        selectedArr(2, 'column')
+        selectedArr(3, 'column')
+        findCrossWin()
+      }
     }
 
     play(e) {
 
       if (user.length == 2) {
         if (count % 2 == 0) {
-          playTurn(user[1], e);
-          return;
+          playTurn(user[0], e)
+          return
         }
-        playTurn(user[0], e);
+        playTurn(user[1], e)
       }
     }
 
     reset(e) {
-      user = [];
-      count = 1;
-      userSet = false;
-      var firstPlayer = document.getElementsByClassName('firstPlayer');
-      firstPlayer[0].classList.remove('firstPlayer');
+      if (userSet) {
+        user = []
+        count = 0
+        gameOver = false
+        userSet = false
+        message[0].classList.add('hide')
+        var firstPlayer = document.getElementsByClassName('firstPlayer');
+        firstPlayer[0].classList.remove('firstPlayer');
 
-      var boardSections = document.querySelectorAll('.board .addcolor');
-      for (var i = 0; i < boardSections.length; i++) {
-        boardSections[i].classList.remove('addcolor');
-        boardSections[i].innerHTML = '.';
+        var boardSections = document.querySelectorAll('.board .addcolor');
+        for (var i = 0; i < boardSections.length; i++) {
+          boardSections[i].classList.remove('addcolor')
+        }
+
+        opts.board.map(function (el) {
+          el.content = '.'
+          el.selected = false
+        })
       }
     }
 

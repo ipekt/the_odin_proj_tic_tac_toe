@@ -6,10 +6,11 @@ body {
 
 h1 {
   font-size: 3em;
-  margin: 1em;
+  margin: 0.2em 1em;
 }
 h2 {
   text-align: center;
+  margin: 0.1em;
 }
 h3 {
   display: inline-block;
@@ -21,7 +22,7 @@ h3 {
   cursor: pointer;
   display: inline-block;
   font-family: fantasy;
-  font-size: 3em;
+  font-size: 2em;
   font-weight: 500;
   line-height: 2em;
   margin: 0 auto;
@@ -29,7 +30,9 @@ h3 {
   text-align: center;
   width: 49%;
 }
-
+.board {
+  position: relative;
+}
 .board li {
           box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -47,9 +50,17 @@ h3 {
 }
 
 .sides {
-  margin: 2em auto;
+  margin: 1em auto 3em auto;
   text-align: center;
   width: 300px;
+}
+
+.btn {
+  display: block;
+  padding: 0.5em;
+  margin: 1em auto;
+  font-size: 1.2em;
+  float: left;
 }
 
 input[type="checkbox"] {
@@ -63,20 +74,37 @@ ul {
   width: 300px;
 }
 
-.x {
-  content: 'x';
- 
-}
-
-.o {
-  content: 'o';
-}
 .addcolor {
   color: #000 !important;
 }
+
 .firstPlayer:before {
   content: 'First Player';
+  font-size: 0.5em;
+  position: absolute;
+  bottom: -23px;
+  left: 28%;
+}
+
+.secondPlayer:before {
+  content: 'Second Player';
   font-size: 0.3em;
   position: absolute;
   bottom: -30px;
+}
+
+.gameover {
+  position: absolute;
+  color: rgba(255, 0, 0, 0.75);
+  font-size: 2em;
+  z-index: 1;
+  right: -50%;
+  left: 6%;
+  top: -13%;
+  font-family: fantasy;
+}
+
+
+.hide {
+  display: none;
 }
